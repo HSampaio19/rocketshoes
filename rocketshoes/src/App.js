@@ -1,8 +1,17 @@
+import React from 'react';
+import { BrowserRouter } from 'react-router-dom';
+import Header from './components/Header';
+
+import Rotas from './routes';
+import GlobalStyles from './styles/styles';
+
 function App() {
   return (
-    <div className="App">
-      <h1>Hello Redux</h1>
-    </div>
+    <BrowserRouter>
+      <GlobalStyles />
+      <Header />
+      <Rotas />
+    </BrowserRouter>
   );
 }
 
