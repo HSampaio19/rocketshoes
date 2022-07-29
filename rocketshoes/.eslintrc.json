@@ -50,7 +50,9 @@
       "error"
     ],
     "react/react-in-jsx-scope": "off",
-    "no-console":["error", {"allow": ["tron"]}]
+    "no-console":["error", {"allow": ["tron"]}],
+    "no-param-reassign":"off",
+    "default-param-last": "off"
   },
   "settings": {
     "import/resolver": {

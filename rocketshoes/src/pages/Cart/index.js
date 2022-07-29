@@ -6,8 +6,10 @@ import {
 } from 'react-icons/md';
 import { connect } from 'react-redux';
 import { CartContainer, ProductTable, Total } from './styles';
+import * as cartActions from '../../store/modules/cart/actions';
+import { formatPrice } from '../../util/format';
 
-function Cart({ products }) {
+function Cart({ products, total, dispatch }) {
   return (
     <CartContainer>
       <ProductTable>
@@ -32,20 +34,35 @@ function Cart({ products }) {
               </td>
               <td>
                 <div>
-                  <button type="button">
+                  <button
+                    type="button"
+                    onClick={() =>
+                      dispatch(cartActions.decrementFromCart(product.id))
+                    }
+                  >
                     <MdRemoveCircleOutline size={20} color="#7159c1" />
                   </button>
                   <input type="number" readOnly value={product.amount} />
-                  <button type="button">
+                  <button
+                    type="button"
+                    onClick={() =>
+                      dispatch(cartActions.incrementFromCart(product.id))
+                    }
+                  >
                     <MdAddCircleOutline size={20} color="#7159c1" />
                   </button>
                 </div>
               </td>
               <td>
-                <strong>R$799,98</strong>
+                <strong>{product.subtotal}</strong>
               </td>
               <td>
-                <button type="button">
+                <button
+                  type="button"
+                  onClick={() =>
+                    dispatch(cartActions.removeFromCart(product.id))
+                  }
+                >
                   <MdDelete size={20} color="#7159c1" />
                 </button>
               </td>
@@ -58,7 +75,7 @@ function Cart({ products }) {
 
         <Total>
           <span>TOTAL</span>
-          <strong>R$ 1920,20</strong>
+          <strong>{total}</strong>
         </Total>
       </footer>
     </CartContainer>
@@ -66,7 +83,14 @@ function Cart({ products }) {
 }
 
 const mapStateToProps = state => ({
-  products: state.cart,
+  products: state.cart.map(product => ({
+    ...product,
+    subtotal: formatPrice(product.price * product.amount),
+  })),
+  total: formatPrice(
+    state.cart.reduce((total, product) => {
+      return total + product.price * product.amount;
+    }, 0),
+  ),
 });
-
 export default connect(mapStateToProps)(Cart);
