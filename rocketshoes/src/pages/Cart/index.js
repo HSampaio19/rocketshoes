@@ -24,7 +24,7 @@ function Cart({ products, total, dispatch }) {
         </thead>
         <tbody>
           {products.map(product => (
-            <tr>
+            <tr key={`produto${product.id}`}>
               <td>
                 <img src={product.image} alt={product.title} />
               </td>

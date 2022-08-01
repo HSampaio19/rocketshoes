@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import ProductList from './styles';
 import api from '../../services/api';
 import { formatPrice } from '../../util/format';
-import { addToCart } from '../../store/modules/cart/actions';
+import { addToCartRequest } from '../../store/modules/cart/actions';
 
 class Home extends Component {
   constructor() {
@@ -13,10 +13,10 @@ class Home extends Component {
       products: [],
     };
 
-    this.handleAddProducts = product => {
+    this.handleAddProducts = id => {
       const { dispatch } = this.props;
 
-      dispatch(addToCart(product));
+      dispatch(addToCartRequest(id));
     };
   }
 
@@ -44,7 +44,7 @@ class Home extends Component {
             <span>{product.priceFormatted}</span>
             <button
               type="button"
-              onClick={() => this.handleAddProducts(product)}
+              onClick={() => this.handleAddProducts(product.id)}
             >
               <div>
                 <MdAddShoppingCart size={16} color="#FFF" />
