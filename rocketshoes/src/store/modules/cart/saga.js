@@ -33,7 +33,30 @@ function* addToCart({ id }) {
     yield put(addToCartSucess(data));
   }
 
-  yield put(incrementFromCart(id));
+  yield put(incrementFromCart(id, 'success'));
 }
 
-export default all([takeLatest('@cart/ADD_REQUEST', addToCart)]);
+function* updateAmount({ id }) {
+  const productExists = yield select(state =>
+    state.cart.find(p => p.id === id),
+  );
+
+  const stockResponse = yield call(api.get, `/stock/${id}`);
+
+  const stockAmount = stockResponse.data.amount;
+  const currentAmount = productExists ? productExists.amount : 0;
+
+  const amount = currentAmount + 1;
+
+  if (amount > stockAmount) {
+    toast.error('Quantidade solicitada fora de estoque');
+    return;
+  }
+
+  yield put(incrementFromCart(id, 'success'));
+}
+
+export default all([
+  takeLatest('@cart/ADD_REQUEST', addToCart),
+  takeLatest('@cart/INCREMENT_REQUEST', updateAmount),
+]);

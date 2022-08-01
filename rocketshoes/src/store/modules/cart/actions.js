@@ -18,16 +18,26 @@ export function removeFromCart(id) {
     id,
   };
 }
-export function decrementFromCartRequest(id) {
+export function decrementFromCart(id) {
   return {
     type: '@cart/DECREMENT_FROM_CART',
     id,
   };
 }
 
-export function incrementFromCart(id) {
-  return {
-    type: '@cart/INCREMENT_FROM_CART',
-    id,
-  };
+export function incrementFromCart(id, saga) {
+  switch (saga) {
+    case 'request':
+      return {
+        type: '@cart/INCREMENT_REQUEST',
+        id,
+      };
+    case 'success':
+      return {
+        type: '@cart/INCREMENT_SUCCESS',
+        id,
+      };
+    default:
+      return {};
+  }
 }

@@ -46,7 +46,9 @@ function Cart({ products, total, dispatch }) {
                   <button
                     type="button"
                     onClick={() =>
-                      dispatch(cartActions.incrementFromCart(product.id))
+                      dispatch(
+                        cartActions.incrementFromCart(product.id, 'request'),
+                      )
                     }
                   >
                     <MdAddCircleOutline size={20} color="#7159c1" />
